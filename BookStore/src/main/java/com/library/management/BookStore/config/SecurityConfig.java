@@ -18,13 +18,13 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(
-				authorize -> authorize.requestMatchers("/", "/register", "/save", "/css/**", "/js/**").permitAll() // Public
-						// pages
-						.requestMatchers("/add").hasRole("Admin") // Restrict "/addnew" to users with ADMIN role
-						.anyRequest().authenticated() // Permit
-														// public
-														// pages
+		http.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/", "/login", "/register", "/save", "/css/**", "/js/**").permitAll() // Public
+				// pages
+				.requestMatchers("/add").hasRole("Admin") // Restrict "/addnew" to users with ADMIN role
+				.anyRequest().authenticated() // Permit
+												// public
+												// pages
 		// Secure other pages
 		).formLogin(form -> form.loginPage("/login") // Custom login page
 				.defaultSuccessUrl("/books", true) // Redirect to index.html after login

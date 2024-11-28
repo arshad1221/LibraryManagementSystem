@@ -1,38 +1,44 @@
 server:
-  port: 8082
+  port: 8082  # Application will run on port 8082
+
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/orderdb
-    username: root
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: postgres
     password: 123456
-    driverClassName: com.mysql.cj.jdbc.Driver
-    
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update  # Controls schema generation (update, validate, create, create-drop)
+    show-sql: true       # Enables SQL query logging
     properties:
       hibernate:
-        format_sql: true
+        format_sql: true # Formats SQL queries for better readability
+
   application:
-    name: BookStore
-  
+    name: BookStore  # Application name
+
   thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html  
+    prefix: classpath:/templates/  # Location of Thymeleaf templates
+    suffix: .html                  # Template file extension
 
 management:
   endpoints:
     web:
       exposure:
-        include: '*'  # Exposes all available actuator endpoints
+        include: '*'  # Expose all Actuator endpoints
   endpoint:
     shutdown:
-      enabled: true  # Explicitly enable the shutdown endpoint
+      enabled: true    # Enable the shutdown endpoint
+
 logging:
   level:
-    org:
-      springframework: DEBUG
-      thymeleaf: DEBUG
-      
+    org.springframework: DEBUG  # Debug level for Spring logs
+    thymeleaf: DEBUG            # Debug level for Thymeleaf logs
