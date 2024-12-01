@@ -21,7 +21,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/", "/login", "/register", "/save", "/css/**", "/js/**").permitAll() // Public
 				// pages
-				.requestMatchers("/add").hasRole("Admin") // Restrict "/addnew" to users with ADMIN role
+				.requestMatchers("/add").hasRole("ADMIN") // Restrict "/addnew" to users with ADMIN role
 				.anyRequest().authenticated() // Permit
 												// public
 												// pages
@@ -29,12 +29,7 @@ public class SecurityConfig {
 		).formLogin(form -> form.loginPage("/login") // Custom login page
 				.defaultSuccessUrl("/books", true) // Redirect to index.html after login
 				.permitAll()).logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout") // Redirect
-																												// to
-																												// login
-																												// page
-																												// after
-																												// logout
-						.permitAll());
+		);
 		return http.build();
 	}
 

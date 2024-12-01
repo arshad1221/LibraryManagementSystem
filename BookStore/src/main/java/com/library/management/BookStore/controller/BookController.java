@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,18 +81,20 @@ public class BookController {
 	@PostMapping("/save")
 	public String saveEmployee(@ModelAttribute("newuser") NewUser newuser) {
 		bookService.register(newuser);
-		return "redirect:/";
+		return "redirect:/login";
 	}
 
 	// issueBook
 
 	@PostMapping("/issue")
-	public String issueBook(@RequestParam("bookId") Long bookId, @RequestParam("userId") Long userId,
-			RedirectAttributes redirectAttributes) {
+	public String issueBook(@RequestParam("bookId") Long bookId, @RequestParam("userId") String userId,
+			Authentication authentication, RedirectAttributes redirectAttributes) {
 		try {
-			bookService.issueBook(bookId, userId); // Pass both IDs to the service method
-			redirectAttributes.addFlashAttribute("message", "Book issued successfully to user ID: " + userId);
+			if (userId.equals(authentication.getName())) {
 
+				bookService.issueBook(bookId, userId); // Pass both IDs to the service method
+				redirectAttributes.addFlashAttribute("message", "Book issued successfully to user ID: " + userId);
+			}
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("error", "Failed to issue the book: " + e.getMessage());
 		}

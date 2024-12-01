@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Transactional
-	public void issueBook(Long bookId, Long userId) {
+	public void issueBook(Long bookId, String userId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 		if (book.getIsIssued())
 			throw new RuntimeException("Book already issued");
@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
 		transaction.setBook(book);
 		transaction.setIssueDate(LocalDateTime.now());
 		transaction.setReturnDate((transaction.getIssueDate().plusDays(7)));
-		transaction.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
+		transaction.setUser(userRepository.findByUsername(userId));
 		transactionRepository.save(transaction);
 	}
 

@@ -13,7 +13,7 @@ public interface BookService {
 
 	public Page<Book> searchBooks(Pageable pageable, String query);
 
-	public void issueBook(Long bookId, Long userId);
+	public void issueBook(Long bookId, String userId);
 
 	public void returnBook(Long bookId);
 
